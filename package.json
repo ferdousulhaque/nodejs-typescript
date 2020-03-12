@@ -25,7 +25,8 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "tsc-watch": "^4.1.0",
-    "typescript": "^3.8.2"
+    "typescript": "^3.8.2",
+    "winston": "^3.2.1"
   },
   "engines": {
     "node": "10.x"
