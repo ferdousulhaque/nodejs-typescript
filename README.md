@@ -4,5 +4,21 @@ I am very fond of javascript, once doing one project, my boss insisted me to use
 
 Too much verbose, let's begin with the structure:
 
+## Framework
+
+A good framework consists of the below features:
+
+1. Coding Standard Strictly - which TS strictly follows
+2. Error Handling - Getting the right error to understand
+3. Logger - To keep the application logs for debugging
+4. Middleware - to save you before the business logic
+5. TDD - Testing Platform ready
+6. Structured routes
+7. Constant config for easy config change
+8. In built API documentation - Swagger
+9. Clustering of application for full performance gain form CPU
+
+Here in this framework I tried to cater all the requirements to make this as the best possible framework to start with.
+
 ## Structure
 
