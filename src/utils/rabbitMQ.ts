@@ -14,45 +14,37 @@ export const send = async () => {
             'guest'
         )
     };
-    var connection = new Amqp.Connection(process.env.PUSH_QUEUE_URL, opt);
-    logger.debug(connection.isConnected);
+    var connection = new Amqp.Connection(process.env.PUSH_QUEUE_URL, opt, {
+        retries: 3,
+        interval: 1500
+    });
+    //logger.debug(await connection.isConnected);
 
-    connection.on("open_connection", ()=> {
-        logger.debug("open_connection");
+    connection.on("open_connection", () => {
+        logger.debug("Opening connection");
+        var exchange = connection.declareExchange("ExchangeName");
+        var queue = connection.declareQueue("notification");
+        queue.bind(exchange);
+        var msg = new Amqp.Message("Ferdous");
+        exchange.send(msg);
+        logger.debug("Message send");
     });
 
-    connection.on("close_connection", ()=> {
-        logger.debug("close_connection");
-    });
+    // connection.on("close_connection", ()=> {
+    //     logger.debug("close_connection");
+    // });
 
-    connection.on("lost_connection", ()=> {
-        logger.debug("lost_connection");
-    });
+    // connection.on("lost_connection", () => {
+    //     logger.debug("lost_connection");
+    // });
 
-    
+    // connection.on("trying_connect", ()=> {
+    //     logger.debug("trying_connect");
+    // });
 
-    connection.on("trying_connect", ()=> {
-        logger.debug("trying_connect");
+    connection.on("error_connection", (err) => {
+        logger.error("Error Connecting to RabbitMQ on " + process.env.PUSH_QUEUE_URL);
     });
-    
-    connection.on("re_established_connection", ()=> {
-        logger.debug("re_established_connection");
-    });
-
-    connection.on("error_connection", (err)=> {
-        logger.debug("error_connection"+err);
-    });
-    
-    var exchange = connection.declareExchange("ExchangeName");
-    var queue = connection.declareQueue("notification");
-    queue.bind(exchange).then((succ) => {
-        logger.debug(succ);
-    }).catch(err => logger.debug(err));
-    // it is possible that the following message is not received because
-    // it can be sent before the queue, binding or consumer exist
-    var msg = new Amqp.Message("Ferdous");
-    await exchange.send(msg);
-    await logger.debug("Message send");
 }
 
 /*
@@ -74,13 +66,16 @@ export const receive = async () => {
             'guest'
         )
     };
-    var connection = new Amqp.Connection(process.env.PUSH_QUEUE_URL, opt);
+    var connection = new Amqp.Connection(process.env.PUSH_QUEUE_URL, opt, {
+        retries: 3,
+        interval: 1500
+    });
 
-    if(await connection.isConnected){
+    connection.on("open_connection", () => {
         var exchange = connection.declareExchange("ExchangeName");
         // declare a new queue, it will be created if it does not already exist (async)
         var queue = connection.declareQueue("notification", {
-            durable: false
+            durable: true
         });
         queue.bind(exchange);
         // create a consumer function for the queue
@@ -97,7 +92,9 @@ export const receive = async () => {
         }, {
             noAck: false
         });
-    }else{
-        logger.error("Worker: No Service Running on "+process.env.PUSH_QUEUE_URL);
-    }
+    });
+
+    connection.on("error_connection", (err) => {
+        logger.error("Error Connecting to RabbitMQ on " + process.env.PUSH_QUEUE_URL);
+    });
 }

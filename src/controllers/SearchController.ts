@@ -27,11 +27,11 @@ class SearchController {
   }
 
   public async send(req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response) {
-    // rabbit.send().then(()=> {
-    //   res.status(200).json({
-    //     status: 'success'
-    //   });
-    // })
+    rabbit.send().then(()=> {
+      res.status(200).json({
+        status: 'success'
+      });
+    })
   }
 
   public async receive(req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response) {
