@@ -3,6 +3,7 @@ import * as sampleModel from "../models/tokenQuery";
 import { Request, Response } from 'express';
 import { QueryResult } from 'pg';
 import logger = require('./../utils/logger');
+import * as rabbit from './../utils/rabbitMQ';
 
 class SearchController {
   public async create(req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response) {
@@ -23,6 +24,22 @@ class SearchController {
           logger.error(`getTime error: ${error.message}`);
           res.status(500).json({status:'error', message: error.message, statusCode: 500});
       }
+  }
+
+  public async send(req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response) {
+    // rabbit.send().then(()=> {
+    //   res.status(200).json({
+    //     status: 'success'
+    //   });
+    // })
+  }
+
+  public async receive(req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response) {
+    rabbit.receive().then(()=> {
+      res.status(200).json({
+        status: 'success'
+      });
+    })
   }
 }
 

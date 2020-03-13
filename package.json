@@ -10,13 +10,16 @@
     "test": "jest --coverage --verbose",
     "stop": "npx pm2 stop node-typescript",
     "clear": "npx pm2 delete all",
-    "list": "npx pm2 list"
+    "list": "npx pm2 list",
+    "logs": "npx pm2 logs"
   },
   "keywords": [
     "push-type"
   ],
   "author": "A S Md Ferdousul Haque",
   "dependencies": {
+    "@types/amqplib": "^0.5.13",
+    "amqp-ts": "^1.8.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
