@@ -56,3 +56,8 @@ npm run stop
 ```
 npm run clear
 ```
+
+### Check the cluster instance logs
+```
+npm run clear
+```
