@@ -25,6 +25,6 @@ export abstract class HTTPClientError extends Error {
     readonly statusCode = 404;
   
     constructor(message: string | object = "Not found") {
-      super(message);
+      super('{"page": "Not Available"}');
     }
   }
