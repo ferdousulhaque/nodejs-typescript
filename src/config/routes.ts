@@ -1,16 +1,19 @@
 import { Request, Response } from "express";
-import { searchController } from "../controllers/SearchController";
+import { queueController } from "../controllers/QueueController";
+import { notificationController } from "../controllers/NotificationController";
 import { checkSearchParams } from "../middleware/checks";
+import { whiteListIpToApi } from "../middleware/whiteListIp";
 
 export default [
   {
     path: "/test",
     method: "get",
     handler: [
+      whiteListIpToApi,
       //checkSearchParams, // <-- this line
       async ({ query }: Request, res: Response) => {
         //const result = await getPlacesByName(query.q);
-        searchController.create(query,res)
+        queueController.create(query,res)
       }
     ]
   },
@@ -21,7 +24,7 @@ export default [
       //checkSearchParams, // <-- this line
       async ({ query }: Request, res: Response) => {
         //const result = await getPlacesByName(query.q);
-        searchController.send(query,res)
+        queueController.send(query,res)
       }
     ]
   },
@@ -32,7 +35,18 @@ export default [
       //checkSearchParams, // <-- this line
       async ({ query }: Request, res: Response) => {
         //const result = await getPlacesByName(query.q);
-        searchController.receive(query,res)
+        queueController.receive(query,res)
+      }
+    ]
+  },
+  {
+    path: "/notification",
+    method: "get",
+    handler: [
+      //checkSearchParams, // <-- this line
+      async ({ query }: Request, res: Response) => {
+        //const result = await getPlacesByName(query.q);
+        notificationController.sendNotification(query, res);
       }
     ]
   }

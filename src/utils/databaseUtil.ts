@@ -27,7 +27,7 @@ pool.on('error', function (err, client) {
  * @return result
  */
 export const sqlToDB = async (sql:string, data:string[][]) => {
-    logger.debug(`sqlToDB() sql: ${sql} | data: ${data}`);
+    //logger.debug(`sqlToDB() sql: ${sql} | data: ${data}`);
     let result : pg.QueryResult;
     try {
         result = await pool.query(sql, data);

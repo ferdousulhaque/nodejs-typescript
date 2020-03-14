@@ -2,10 +2,10 @@ import { getPlaces } from "../providers/OpenCageDataProvider";
 import * as sampleModel from "../models/tokenQuery";
 import { Request, Response } from 'express';
 import { QueryResult } from 'pg';
-import logger = require('./../utils/logger');
-import * as rabbit from './../utils/rabbitMQ';
+import logger = require('../utils/logger');
+import * as rabbit from '../utils/rabbitMQ';
 
-class SearchController {
+class QueueController {
   public async create(req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response) {
       //throw new Error("Method not implemented.");
       // res.status(200).send({
@@ -43,8 +43,8 @@ class SearchController {
   }
 }
 
-const searchController = new SearchController();
+const queueController = new QueueController();
 
 export {
-  searchController
+  queueController
 };
